@@ -113,7 +113,11 @@ MOBase::VersionInfo GameFallout4::version() const
 
 QList<PluginSetting> GameFallout4::settings() const
 {
-  return QList<PluginSetting>();
+  return QList<PluginSetting>()
+         << PluginSetting("enable_loot_sorting",
+                          tr("While not recommended by the FO4 modding community, "
+                             "enables LOOT sorting"),
+                          false);
 }
 
 MappingType GameFallout4::mappings() const
@@ -274,7 +278,7 @@ QStringList GameFallout4::CCPlugins() const
 
 IPluginGame::SortMechanism GameFallout4::sortMechanism() const
 {
-  if (!testFilePresent())
+  if (m_Organizer->pluginSetting(name(), "enable_loot_sorting").toBool() && !testFilePresent())
     return IPluginGame::SortMechanism::LOOT;
   return IPluginGame::SortMechanism::NONE;
 }
